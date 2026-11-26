@@ -9,8 +9,8 @@ import { uid } from './utils.js';
 import { api } from './api.js';
 
 const cache = { staff: [], records: new Map() };     // records: key -> { key, term, staffId, updated, form }
-const fileCache = new Map();
-let seenVersion = 0;                                  // server change counter at the last full pull                          // fid -> data URL
+const fileCache = new Map();                          // fid -> data URL
+let seenVersion = 0;                                  // server change counter at the last full pull
 
 // small per-device settings (the selected academic year)
 export const getSetting = async (k) => { try { return JSON.parse(localStorage.getItem('grt_' + k)); } catch { return undefined; } };
@@ -105,6 +105,7 @@ export async function hydrate(form) {
   return { ...form, nptel };
 }
 
+// NEW: removes one semester record (used when a record is moved to another academic year / semester)
 export const removeRecord = async (key) => { await api('deleteRecord', { key }); cache.records.delete(key); };
 
 export const removeStaff = async (id) => {

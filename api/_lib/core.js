@@ -61,7 +61,7 @@ export async function handle(body, authHeader, env = process.env) {
         const send = await db.getRecords(need.slice(0, PAGE));
         return ok({ version, staff, manifest: meta.map((m) => [m.key, m.updated]), records: send, more: need.length > PAGE });
       }
-      case 'deleteRecord': {
+      case 'deleteRecord': {                       // NEW: used when a record is moved to another academic year / semester
         const d = needAdmin(); if (d) return d;
         await db.deleteRecord(String(body.key)); return ok();
       }

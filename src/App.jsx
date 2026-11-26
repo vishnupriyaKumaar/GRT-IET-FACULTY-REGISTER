@@ -13,7 +13,7 @@ import { normalizeForm } from './constants.js';
 import { uid } from './utils.js';
 import { currentTerm, parseTerm } from './terms.js';
 import { roster, resolve } from './roster.js';
-import { getSetting, setSetting, listStaff, listRecords, putStaff, putRecord, removeStaff, prepareForStore, pull, lookup, resetCache, removeRecord } from './storage.js';
+import { getSetting, setSetting, listStaff, listRecords, putStaff, putRecord, removeStaff, removeRecord, prepareForStore, pull, lookup, resetCache } from './storage.js';
 import Login from './components/Login.jsx';
 import ChangePasswordModal from './components/ChangePasswordModal.jsx';
 import { getRole, setRole } from './auth.js';
@@ -87,6 +87,7 @@ export default function App() {
 
   // ---------- writes ----------
   // targetTerm: the academic year / semester to keep this record under (the Update tab can change it)
+   // targetTerm: the academic year / semester to keep this record under (the Update tab can change it)
   const saveTeacher = async (id, form, targetTerm = term) => {
     const f = normalizeForm(form);
     const sid = id || uid();
@@ -155,7 +156,7 @@ export default function App() {
       <section className="panel" role="tabpanel">
         {tab === 'add' ? <AddTab key={term} term={term} staff={staff} records={records} onSave={saveTeacher} setMsg={setMsg} teacherMode={!isAdmin} onLookup={lookup} /> : null}
         {isAdmin && tab === 'search' ? <SearchTab term={term} items={items} onView={(id) => setView({ id, term })} /> : null}
-        {isAdmin && tab === 'update' ? <UpdateTab term={term} items={items} selectedId={selectedId} onSelect={setSelectedId} onSave={saveTeacher} onTerm={setTerm} records={records} onRelieve={setRelieveFor} onReinstate={reinstate} onDelete={deleteTeacher} setMsg={setMsg} /> : null}
+                {isAdmin && tab === 'update' ? <UpdateTab term={term} items={items} selectedId={selectedId} onSelect={setSelectedId} onSave={saveTeacher} onTerm={setTerm} records={records} onRelieve={setRelieveFor} onReinstate={reinstate} onDelete={deleteTeacher} setMsg={setMsg} /> : null}
         {isAdmin && tab === 'relieved' ? <RelievedTab staff={staff} records={records} onView={(id) => setView({ id, term: staff.find((s) => s.id === id)?.relievedTerm || term })} onReinstate={reinstate} /> : null}
       </section>
     </div>
